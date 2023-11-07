@@ -1,5 +1,6 @@
 # NoMAD 1.x
 
+
 The NoMAD 1.x releases have come to a close now with NoMAD 2 closing in on release. You can find the most current release (1.3.0) of NoMAD here in the releases section.
 
 Please take a look at the [NoMAD 2](https://github.com/jamf/NoMAD-2) repo for current and ongoing work and discussions.
