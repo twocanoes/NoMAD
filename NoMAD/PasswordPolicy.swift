@@ -74,42 +74,42 @@ class PasswordPolicy {
 
         var result = ""
 
-        let capsOnly = String(pass.characters.filter({ (caps.contains($0))}))
-        let lowerOnly = String(pass.characters.filter({ (lowers.contains($0))}))
-        let numberOnly = String(pass.characters.filter({ (numbers.contains($0))}))
-        let symbolOnly = String(pass.characters.filter({ (symbols.contains($0))}))
+        let capsOnly = String(pass.filter({ (caps.contains($0))}))
+        let lowerOnly = String(pass.filter({ (lowers.contains($0))}))
+        let numberOnly = String(pass.filter({ (numbers.contains($0))}))
+        let symbolOnly = String(pass.filter({ (symbols.contains($0))}))
 
         var totalMatches = 0
 
-        if pass.characters.count < policyObject.minLength {
+        if pass.count < policyObject.minLength {
             result.append("Length requirement not met.\n")
         }
 
-        if capsOnly.characters.count < policyObject.minUpperCase {
+        if capsOnly.count < policyObject.minUpperCase {
             result.append("Upper case character requirement not met.\n")
         } else {
             totalMatches += 1
         }
 
-        if lowerOnly.characters.count < policyObject.minLowerCase {
+        if lowerOnly.count < policyObject.minLowerCase {
             result.append("Lower case character requirement not met.\n")
         } else {
             totalMatches += 1
         }
 
-        if numberOnly.characters.count < policyObject.minNumber {
+        if numberOnly.count < policyObject.minNumber {
             result.append("Numeric character requirement not met.\n")
         } else {
             totalMatches += 1
         }
 
-        if symbolOnly.characters.count < policyObject.minSymbol {
+        if symbolOnly.count < policyObject.minSymbol {
             result.append("Symbolic character requirement not met.\n")
         } else {
             totalMatches += 1
         }
 
-        if totalMatches >= policyObject.minMatches && policyObject.minMatches != 0 && pass.characters.count >= policyObject.minLength {
+        if totalMatches >= policyObject.minMatches && policyObject.minMatches != 0 && pass.count >= policyObject.minLength {
             result = ""
         }
 

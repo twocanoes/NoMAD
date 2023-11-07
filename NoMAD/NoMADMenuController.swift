@@ -104,7 +104,7 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
 
     var selfService: SelfServiceType?
 
-    let statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
+    let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     
     let PKINITMenuItem = NSMenuItem()
     
@@ -141,25 +141,26 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
         if defaults.string(forKey: Preferences.iconOn) != nil {
             myIconOn = NSImage.init(contentsOfFile: defaults.string(forKey: Preferences.iconOn)!)!
         } else {
-            myIconOn = NSImage(named: "NoMAD-statusicon-on-on")!
+            myIconOn = NSImage(named: NSImage.Name( "NoMAD-statusicon-on-on"))!
         }
         
         if defaults.string(forKey: Preferences.iconOff) != nil {
             myIconOff = NSImage.init(contentsOfFile: defaults.string(forKey: Preferences.iconOff)!)!
         } else {
-            myIconOff = NSImage(named: "NoMAD-statusicon-off-off")!
+            myIconOff = NSImage(named: NSImage.Name( "NoMAD-statusicon-off-off"))!
         }
         
         if defaults.string(forKey: Preferences.iconOnDark) != nil {
             myIconOnDark = NSImage.init(contentsOfFile: defaults.string(forKey: Preferences.iconOnDark)!)!
         } else {
-            myIconOnDark = NSImage(named: "NoMAD-LogoAlternate-on")!
+
+            myIconOnDark = NSImage(named: NSImage.Name( "NoMAD-LogoAlternate-on"))!
         }
         
         if defaults.string(forKey: Preferences.iconOffDark) != nil {
             myIconOffDark = NSImage.init(contentsOfFile: defaults.string(forKey: Preferences.iconOffDark)!)!
         } else {
-            myIconOffDark = NSImage(named: "NoMAD-LogoAlternate-off")!
+            myIconOffDark = NSImage(named: NSImage.Name( "NoMAD-LogoAlternate-off"))!
         }
 
         // check for Dark Mode
@@ -167,24 +168,24 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
         if UserDefaults.standard.persistentDomain(forName: UserDefaults.globalDomain)?["AppleInterfaceStyle"] == nil {
             if !defaults.bool(forKey: Preferences.caribouTime) {
                 iconOnOn = myIconOn
-                iconOnOff = NSImage(named: "NoMAD-statusicon-on-off")!
+                iconOnOff = NSImage(named: NSImage.Name( "NoMAD-statusicon-on-off"))!
                 iconOffOff = myIconOff
             } else {
-                iconOnOn = NSImage(named: "NoMAD-Caribou-on")!
-                iconOffOff = NSImage(named: "NoMAD-Caribou-off")!
+                iconOnOn = NSImage(named: NSImage.Name( "NoMAD-Caribou-on"))!
+                iconOffOff = NSImage(named: NSImage.Name( "NoMAD-Caribou-off"))!
             }
         } else {
             if !defaults.bool(forKey: Preferences.caribouTime) {
                 iconOnOn = myIconOnDark
-                //iconOnOff = NSImage(named: "NoMAD-statusicon-on-off")
+                //iconOnOff = NSImage(named: NSImage.Name( "NoMAD-statusicon-on-off")
                 iconOffOff = myIconOffDark
             } else {
-                iconOnOn = NSImage(named: "NoMAD-Caribou-dark-on")!
-                iconOffOff = NSImage(named: "NoMAD-Caribou-dark-off")!
+                iconOnOn = NSImage(named: NSImage.Name( "NoMAD-Caribou-dark-on"))!
+                iconOffOff = NSImage(named: NSImage.Name( "NoMAD-Caribou-dark-off"))!
             }
         }
 
-        let defaultPreferences = NSDictionary(contentsOf: Bundle.main.url(forResource: "DefaultPreferences", withExtension: "plist")!)
+        let defaultPreferences = NSDictionary(contentsOf: Bundle.main.url(forResource: "DefaultPreferences", withExtension: "plist")!)!
         defaults.register(defaults: defaultPreferences as! [String : Any])
 
         // Register for update notifications.
@@ -367,9 +368,9 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
                 let name = defaults.string(forKey: Preferences.lastUser)! + "@" + defaults.string(forKey: Preferences.kerberosRealm)!
 
                 myErr = SecKeychainFindGenericPassword(nil,
-                                                       UInt32(serviceName.characters.count),
+                                                       UInt32(serviceName.count),
                                                        serviceName,
-                                                       UInt32(name.characters.count),
+                                                       UInt32(name.count),
                                                        name,
                                                        &passLength,
                                                        &passPtr, &myKeychainItem)
@@ -412,9 +413,9 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
             let name = defaults.string(forKey: Preferences.lastUser)! + "@" + defaults.string(forKey: Preferences.kerberosRealm)!
 
             myErr = SecKeychainFindGenericPassword(nil,
-                                                   UInt32(serviceName.characters.count),
+                                                   UInt32(serviceName.count),
                                                    serviceName,
-                                                   UInt32(name.characters.count),
+                                                   UInt32(name.count),
                                                    name,
                                                    &passLength,
                                                    &passPtr, &myKeychainItem)
@@ -444,7 +445,7 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
     // Sleep the screen when clicked
     @IBAction func NoMADMenuClickLockScreen(_ sender: NSMenuItem) {
 
-        lockScreenImmediate()
+//        lockScreenImmediate()
 
         return
 
@@ -455,22 +456,22 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
 
     }
 
-    func lockScreenImmediate() -> Void {
-
-        //
-        // Thanks to @ftiff for this
-        // www.github.com/ftiff
-        //
-
-        // Note: Private -- Do not use!
-        // http://stackoverflow.com/questions/34669958/swift-how-to-call-a-c-function-loaded-from-a-dylib
-
-        let libHandle = dlopen("/System/Library/PrivateFrameworks/login.framework/Versions/Current/login", RTLD_LAZY)
-        let sym = dlsym(libHandle, "SACLockScreenImmediate")
-        typealias myFunction = @convention(c) (Void) -> Void
-        let SACLockScreenImmediate = unsafeBitCast(sym, to: myFunction.self)
-        SACLockScreenImmediate()
-    }
+//    func lockScreenImmediate() -> Void {
+//
+//        //
+//        // Thanks to @ftiff for this
+//        // www.github.com/ftiff
+//        //
+//
+//        // Note: Private -- Do not use!
+//        // http://stackoverflow.com/questions/34669958/swift-how-to-call-a-c-function-loaded-from-a-dylib
+//
+//        let libHandle = dlopen("/System/Library/PrivateFrameworks/login.framework/Versions/Current/login", RTLD_LAZY)
+//        let sym = dlsym(libHandle, "SACLockScreenImmediate")
+//        typealias myFunction = @convention(c) (Void) -> Void
+//        let SACLockScreenImmediate = unsafeBitCast(sym, to: myFunction.self)
+//        SACLockScreenImmediate()
+//    }
 
     // gets a cert from the Windows CA
     @IBAction func NoMADMenuClickGetCertificate(_ sender: NSMenuItem) -> Void {
@@ -487,11 +488,11 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
 
         switch selfService {
         case .casper:
-            NSWorkspace.shared().launchApplication("/Applications/Self Service.app")
+            NSWorkspace.shared.launchApplication("/Applications/Self Service.app")
         case .lanrev:
             cliTask("/Library/Application\\ Support/LANrev\\ Agent/LANrev\\ Agent.app/Contents/MacOS/LANrev\\ Agent --ShowOnDemandPackages")
         case .munki:
-            NSWorkspace.shared().launchApplication("/Applications/Managed Software Center.app")
+            NSWorkspace.shared.launchApplication("/Applications/Managed Software Center.app")
         case .custom:
             cliTask("/usr/bin/open " + defaults.string(forKey: Preferences.selfServicePath)!)
         }
@@ -518,18 +519,18 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
 
     // quit when asked
     @IBAction func NoMADMenuClickQuit(_ sender: NSMenuItem) {
-        NSApplication.shared().terminate(self)
+        NSApplication.shared.terminate(self)
     }
 
     // show PKINITer when asked
 
-    func smartcardSignIn() {
+    @objc func smartcardSignIn() {
         launchPKINITer()
     }
 
     func getCert(_ alerts: Bool) {
 
-        var myResponse: Int?
+        var myResponse: NSApplication.ModalResponse?
 
         // TODO: check to see if the SSL Certs are trusted, otherwise we'll fail
 
@@ -558,7 +559,7 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
 
                     myResponse = alertController.runModal()
 
-                    if myResponse == 1000 {
+                    if myResponse == .alertFirstButtonReturn {
                         return
                     }
                 } else {
@@ -804,7 +805,7 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
     }
 
     // everything to do on a network change
-    func doTheNeedfull() {
+    @objc func doTheNeedfull() {
 
         if ( self.userInformation.myLDAPServers.getDomain() == "not set" ) {
             //self.userInformation.myLDAPServers.tickets.getDetails()
@@ -815,7 +816,7 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
     }
 
     // simple function to renew tickets
-    func renewTickets(){
+    @objc func renewTickets(){
         cliTask("/usr/bin/kinit -R")
         userInformation.myLDAPServers.tickets.getDetails()
         if defaults.bool(forKey: Preferences.verbose) == true {
@@ -823,7 +824,7 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
         }
     }
 
-    func animateMenuItem() {
+    @objc func animateMenuItem() {
         if statusItem.image == iconOnOn {
             statusItem.image = iconOffOff
         } else {
@@ -901,9 +902,9 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
                 let name = defaults.string(forKey: Preferences.lastUser)! + "@" + defaults.string(forKey: Preferences.kerberosRealm)!
 
                 myErr = SecKeychainFindGenericPassword(nil,
-                                                       UInt32(serviceName.characters.count),
+                                                       UInt32(serviceName.count),
                                                        serviceName,
-                                                       UInt32(name.characters.count),
+                                                       UInt32(name.count),
                                                        name,
                                                        &passLength,
                                                        &passPtr, &myKeychainItem)
@@ -925,24 +926,24 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
 
     // change the menu item if it's dark
 
-    func interfaceModeChanged() {
+    @objc func interfaceModeChanged() {
         if UserDefaults.standard.persistentDomain(forName: UserDefaults.globalDomain)?["AppleInterfaceStyle"] == nil {
             if !defaults.bool(forKey: Preferences.caribouTime) {
                 iconOnOn = myIconOn
-                iconOnOff = NSImage(named: "NoMAD-statusicon-on-off")!
+                iconOnOff = NSImage(named: NSImage.Name( "NoMAD-statusicon-on-off"))!
                 iconOffOff = myIconOff
             } else {
-                iconOnOn = NSImage(named: "NoMAD-Caribou-on")!
-                iconOffOff = NSImage(named: "NoMAD-Caribou-off")!
+                iconOnOn = NSImage(named: NSImage.Name( "NoMAD-Caribou-on"))!
+                iconOffOff = NSImage(named: NSImage.Name( "NoMAD-Caribou-off"))!
             }
         } else {
             if !defaults.bool(forKey: Preferences.caribouTime) {
                 iconOnOn = myIconOnDark
-                //iconOnOff = NSImage(named: "NoMAD-statusicon-on-off")
+                //iconOnOff = NSImage(named: NSImage.Name( "NoMAD-statusicon-on-off")
                 iconOffOff = myIconOffDark
             } else {
-                iconOnOn = NSImage(named: "NoMAD-Caribou-dark-on")!
-                iconOffOff = NSImage(named: "NoMAD-Caribou-dark-off")!
+                iconOnOn = NSImage(named: NSImage.Name("NoMAD-Caribou-dark-on"))!
+                iconOffOff = NSImage(named: NSImage.Name( "NoMAD-Caribou-dark-off"))!
             }
         }
         if self.userInformation.status == "Connected" {
@@ -955,7 +956,7 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
     }
 
 
-    func handleAppleEvent(_ event: NSAppleEventDescriptor, withReplyEvent: NSAppleEventDescriptor) {
+                                   @objc func handleAppleEvent(_ event: NSAppleEventDescriptor, withReplyEvent: NSAppleEventDescriptor) {
         let fullCommand = URL(string: (event.paramDescriptor(forKeyword: keyDirectObject)?.stringValue)!)
 
         let command = fullCommand?.host
@@ -1090,7 +1091,7 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
 
     // update the user info and build the actual menu
 
-    func updateUserInfo() {
+    @objc func updateUserInfo() {
 
         myLogger.logit(.base, message:"Updating User Info")
         updateRunning = true
@@ -1190,18 +1191,18 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
 
                             if defaults.string(forKey: Preferences.passwordExpireCustomAlert) != nil {
 
-                                let len = defaults.string(forKey: Preferences.passwordExpireCustomAlert)?.characters.count
+                                let len = defaults.string(forKey: Preferences.passwordExpireCustomAlert)?.count
 
                                 if Int(daysToGo) < defaults.integer(forKey: Preferences.passwordExpireCustomAlertTime) {
                                     let myMutableString = NSMutableAttributedString(string: defaults.string(forKey: Preferences.passwordExpireCustomAlert)!)
-                                    myMutableString.addAttribute(NSForegroundColorAttributeName, value: NSColor.red, range: NSRange(location: 0, length: len!))
+                                    myMutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: NSColor.red, range: NSRange(location: 0, length: len!))
 
                                     self.statusItem.attributedTitle = myMutableString
                                     self.statusItem.attributedTitle = myMutableString
 
                                 } else if Int(daysToGo) < defaults.integer(forKey: Preferences.passwordExpireCustomWarnTime) {
                                     let myMutableString = NSMutableAttributedString(string: defaults.string(forKey: Preferences.passwordExpireCustomAlert)!)
-                                    myMutableString.addAttribute(NSForegroundColorAttributeName, value: NSColor.yellow, range: NSRange(location: 0, length: len!))
+                                    myMutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: NSColor.yellow, range: NSRange(location: 0, length: len!))
 
                                     self.statusItem.attributedTitle = myMutableString
                                     self.statusItem.attributedTitle = myMutableString
@@ -1220,7 +1221,7 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
                             } else {
 
                                 let myMutableString = NSMutableAttributedString(string: String(daysToGo) + "d".translate)
-                                myMutableString.addAttribute(NSForegroundColorAttributeName, value: NSColor.red, range: NSRange(location: 0, length: 2))
+                                myMutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: NSColor.red, range: NSRange(location: 0, length: 2))
                                 self.statusItem.attributedTitle = myMutableString
                                 self.statusItem.attributedTitle = myMutableString
                                 self.NoMADMenuPasswordExpires.title = String(format: "NoMADMenuController-PasswordExpiresInDays".translate, String(daysToGo))
@@ -1310,7 +1311,7 @@ class NoMADMenuController: NSObject, LoginWindowDelegate, PasswordChangeDelegate
 
                         // Share Mounter setup taken out for now
 
-                        //self.myShareMounter.asyncMountShare("smb:" + defaults.stringForKey("UserHome")!)
+                        //self.myShareMounter.asyncMountShare("smb:" + defaults.stringForKey("UserHome"))!)
                         //self.myShareMounter.mount()
                     }
                 })

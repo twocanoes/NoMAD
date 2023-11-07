@@ -27,7 +27,7 @@ public func cliTask( _ command: String, arguments: [String]? = nil) -> String {
             var x = 0
 
             for line in commandPieces {
-                if line.characters.last == "\\" {
+                if line.last == "\\" {
                     commandPieces[x] = commandPieces[x].replacingOccurrences(of: "\\", with: " ") + commandPieces.remove(at: x+1)
                     x -= 1
                 }
@@ -89,7 +89,7 @@ public func cliTaskNoTerm( _ command: String) -> String {
         var x = 0
 
         for line in commandPieces {
-            if line.characters.last == "\\" {
+            if line.last == "\\" {
                 commandPieces[x] = commandPieces[x].replacingOccurrences(of: "\\", with: " ") + commandPieces.remove(at: x+1)
                 x -= 1
             }
@@ -145,8 +145,8 @@ public func getConsoleUser() -> String {
 }
 
 public func getSerial() -> String {
-
-    guard let platformExpert: io_service_t = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice")),
+    let platformExpert: io_service_t = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
+    guard
         let platformSerialNumberKey: CFString = kIOPlatformSerialNumberKey as CFString? else
     {
         return "Unknown"

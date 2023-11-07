@@ -59,7 +59,7 @@ internal struct Network {
     }
 }
 
-//	let searchDomainKeys = SCDynamicStoreCopyKeyList(store, "State:/Network/Service/.*/DNS")! as Array
+//	let searchDomainKeys = SCDynamicStoreCopyKeyList(store, "State:/Network/Service/.*/DNS"))! as Array
 /*	var i = 0, j = searchDomainKeys.count
 
  while ( i < j ) {

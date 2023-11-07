@@ -414,13 +414,13 @@ class LDAPServers : NSObject, DNSResolverDelegate {
                 continue
             }
 
-            var attribute = ldifLines[lineIndex].characters.split(separator: ":", maxSplits: 1, omittingEmptySubsequences: false).map(String.init)
+            var attribute = ldifLines[lineIndex].split(separator: ":", maxSplits: 1, omittingEmptySubsequences: false).map(String.init)
             if attribute.count == 2 {
 
                 // Get the attribute name (before ;),
                 // then add to attributes array if it doesn't exist.
                 var attributeName = attribute[0].trim()
-                if let index = attributeName.characters.index(of: ";") {
+                if let index = attributeName.index(of: ";") {
                     attributeName = attributeName.substring(to: index)
                 }
                 if !attributes.contains(attributeName) {
@@ -433,10 +433,10 @@ class LDAPServers : NSObject, DNSResolverDelegate {
                 // If
                 if attributeValue.hasPrefix("<") {
                     // url
-                    attributeValue = attributeValue.substring(from: attributeValue.characters.index(after: attributeValue.startIndex)).trim()
+                    attributeValue = attributeValue.substring(from: attributeValue.index(after: attributeValue.startIndex)).trim()
                 } else if attributeValue.hasPrefix(":") {
                     // base64
-                    let tempAttributeValue = attributeValue.substring(from: attributeValue.characters.index(after: attributeValue.startIndex)).trim()
+                    let tempAttributeValue = attributeValue.substring(from: attributeValue.index(after: attributeValue.startIndex)).trim()
                     if (Data(base64Encoded: tempAttributeValue, options: NSData.Base64DecodingOptions.init(rawValue: 0)) != nil) {
                         attributeValue = tempAttributeValue
                     } else {
